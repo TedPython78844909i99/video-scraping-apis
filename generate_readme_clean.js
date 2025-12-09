@@ -8,6 +8,43 @@ const fs = require('fs');
 const actors = JSON.parse(fs.readFileSync('apify_actors.json', 'utf-8'));
 
 console.log(`Processing ${actors.length} actors...`);
+console.log(`Filtering out test/placeholder actors...`);
+
+// Function to check if an actor should be filtered out (test/placeholder actors)
+function shouldFilterActor(actor) {
+    const title = (actor.title || actor.name || '').toLowerCase();
+    const name = (actor.name || '').toLowerCase();
+    
+    // Filter patterns
+    const filterPatterns = [
+        /^my actor/i,           // "My Actor", "My Actor 1", "My Actor 29", etc.
+        /^testactor/i,          // "testactor", "TestActor"
+        /^test crawler/i,       // "test Crawler", "TEST CRAWLER"
+        /^test actor/i,         // "Test Actor"
+        /^my actorrr/i,         // "My Actorrr"
+        /^my actor\s*\d+$/i,   // "My Actor 1", "My Actor 29", etc.
+        /^test\s*$/i,          // Just "test"
+        /^test\s+crawler/i,    // "test crawler", "TEST CRAWLER CMS"
+    ];
+    
+    // Check if title matches any filter pattern
+    for (const pattern of filterPatterns) {
+        if (pattern.test(title) || pattern.test(name)) {
+            return true;
+        }
+    }
+    
+    // Also filter if description is just "test" or very short placeholder text
+    const description = (actor.description || '').toLowerCase().trim();
+    if (description === 'test' || description === '') {
+        // Only filter if title also looks like a placeholder
+        if (title.includes('my actor') || title.includes('test')) {
+            return true;
+        }
+    }
+    
+    return false;
+}
 
 // Function to convert category name to readable format and anchor
 function formatCategoryName(category) {
@@ -41,8 +78,14 @@ function formatCategoryName(category) {
 // Organize actors by category
 const actorsByCategory = {};
 const uncategorized = [];
+let filteredCount = 0;
 
 for (const actor of actors) {
+    // Filter out test/placeholder actors
+    if (shouldFilterActor(actor)) {
+        filteredCount++;
+        continue;
+    }
     const categories = actor.categories || [];
     if (categories.length > 0) {
         for (const category of categories) {
@@ -62,10 +105,11 @@ for (const actor of actors) {
 }
 
 const sortedCategories = Object.keys(actorsByCategory).sort();
+const totalActors = actors.length - filteredCount;
 
 // Generate README content
 let content = `# 🚀 API Mega List\n\n`;
-content += `> **The most comprehensive collection of APIs on GitHub** - ${actors.length.toLocaleString()} ready-to-use APIs for building everything from simple automations to full-scale applications.\n\n`;
+content += `> **The most comprehensive collection of APIs on GitHub** - ${totalActors.toLocaleString()} ready-to-use APIs for building everything from simple automations to full-scale applications.\n\n`;
 
 content += `---\n\n`;
 
@@ -73,7 +117,7 @@ content += `---\n\n`;
 content += `## 📊 Collection Statistics\n\n`;
 content += `| Metric | Count |\n`;
 content += `|--------|-------|\n`;
-content += `| **Total APIs** | **${actors.length.toLocaleString()}** |\n`;
+content += `| **Total APIs** | **${totalActors.toLocaleString()}** |\n`;
 content += `| **Categories** | **${sortedCategories.length}** |\n`;
 content += `| **Last Updated** | ${new Date().toISOString().split('T')[0]} |\n\n`;
 
@@ -91,26 +135,20 @@ content += `**All links in this collection include affiliate tracking** (\`?fpr=
 
 content += `---\n\n`;
 
-// Table of Contents with better formatting
+// Table of Contents - simple list format
 content += `## 📚 Table of Contents\n\n`;
-content += `<details>\n`;
-content += `<summary><b>Click to expand - ${sortedCategories.length} Categories</b></summary>\n\n`;
-
-// Create a table for better organization
-content += `| Category | APIs | Link |\n`;
-content += `|----------|------|------|\n`;
 
 for (const category of sortedCategories) {
     const count = actorsByCategory[category].length;
     const { anchor, readable } = formatCategoryName(category);
-    content += `| **${readable}** | ${count.toLocaleString()} | [View →](#${anchor}) |\n`;
+    content += `- [${readable}](#${anchor}) - ${count.toLocaleString()} APIs\n`;
 }
 
 if (uncategorized.length > 0) {
-    content += `| **Uncategorized** | ${uncategorized.length.toLocaleString()} | [View →](#uncategorized) |\n`;
+    content += `- [Uncategorized](#uncategorized) - ${uncategorized.length.toLocaleString()} APIs\n`;
 }
 
-content += `\n</details>\n\n`;
+content += `\n`;
 
 content += `---\n\n`;
 
@@ -230,7 +268,7 @@ content += `---\n\n`;
 
 // Footer
 content += `<div align="center">\n\n`;
-content += `**Total APIs: ${actors.length.toLocaleString()}** | `;
+content += `**Total APIs: ${totalActors.toLocaleString()}** | `;
 content += `**Categories: ${sortedCategories.length}** | `;
 content += `**Last Updated: ${new Date().toISOString().split('T')[0]}**\n\n`;
 content += `*One of the most valuable API lists on GitHub—period.* 💪\n\n`;
@@ -240,6 +278,6 @@ content += `</div>\n`;
 fs.writeFileSync('README.md', content, 'utf-8');
 console.log(`✅ Clean README.md generated successfully!`);
 console.log(`   - ${sortedCategories.length} categories`);
-console.log(`   - ${actors.length.toLocaleString()} total APIs`);
+console.log(`   - ${(actors.length - filteredCount).toLocaleString()} total APIs (${filteredCount} filtered out)`);
 console.log(`   - ${uncategorized.length.toLocaleString()} uncategorized APIs`);
 
