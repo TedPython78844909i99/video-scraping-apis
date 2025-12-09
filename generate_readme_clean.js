@@ -167,38 +167,42 @@ for (const category of sortedCategories) {
         (a.title || a.name || '').localeCompare(b.title || b.name || '')
     );
     
-    // Group into columns for better readability (every 3 items)
-    for (let i = 0; i < sortedActors.length; i += 3) {
-        const batch = sortedActors.slice(i, i + 3);
+    // Create table header
+    content += `| API Name | Description |\n`;
+    content += `|----------|-------------|\n`;
+    
+    // Add each actor as a table row
+    for (const actor of sortedActors) {
+        const title = actor.title || actor.name || 'Unknown';
+        const affiliateUrl = actor.affiliate_url || actor.url || '';
+        const description = actor.description || '';
         
-        for (const actor of batch) {
-            const title = actor.title || actor.name || 'Unknown';
-            const affiliateUrl = actor.affiliate_url || actor.url || '';
-            const description = actor.description || '';
-            
-            // Truncate descriptions at word boundaries
-            const maxDescLength = 150;
-            let shortDescription = description;
-            if (description.length > maxDescLength) {
-                let cutPoint = maxDescLength;
-                const lastSpace = description.lastIndexOf(' ', maxDescLength);
-                if (lastSpace > maxDescLength * 0.8) {
-                    cutPoint = lastSpace;
-                }
-                shortDescription = description.substring(0, cutPoint).trim() + '...';
+        // Truncate descriptions at word boundaries
+        const maxDescLength = 200;
+        let shortDescription = description;
+        if (description.length > maxDescLength) {
+            let cutPoint = maxDescLength;
+            const lastSpace = description.lastIndexOf(' ', maxDescLength);
+            if (lastSpace > maxDescLength * 0.8) {
+                cutPoint = lastSpace;
             }
-            
-            // Clean up title - remove extra brackets if present
-            let cleanTitle = title;
-            if (cleanTitle.startsWith('[') && cleanTitle.includes(']')) {
-                cleanTitle = cleanTitle.replace(/^\[([^\]]+)\]\s*/, '$1 ');
-            }
-            
-            if (shortDescription) {
-                content += `- **[${cleanTitle}](${affiliateUrl})** - ${shortDescription}\n`;
-            } else {
-                content += `- **[${cleanTitle}](${affiliateUrl})**\n`;
-            }
+            shortDescription = description.substring(0, cutPoint).trim() + '...';
+        }
+        
+        // Clean up title - remove extra brackets if present
+        let cleanTitle = title;
+        if (cleanTitle.startsWith('[') && cleanTitle.includes(']')) {
+            cleanTitle = cleanTitle.replace(/^\[([^\]]+)\]\s*/, '$1 ');
+        }
+        
+        // Escape pipe characters and newlines for table format
+        cleanTitle = cleanTitle.replace(/\|/g, '&#124;').replace(/\n/g, ' ');
+        const safeDescription = (shortDescription || '').replace(/\|/g, '&#124;').replace(/\n/g, ' ');
+        
+        if (safeDescription) {
+            content += `| [${cleanTitle}](${affiliateUrl}) | ${safeDescription} |\n`;
+        } else {
+            content += `| [${cleanTitle}](${affiliateUrl}) | - |\n`;
         }
     }
     
@@ -216,12 +220,16 @@ if (uncategorized.length > 0) {
         (a.title || a.name || '').localeCompare(b.title || b.name || '')
     );
     
+    // Create table header
+    content += `| API Name | Description |\n`;
+    content += `|----------|-------------|\n`;
+    
     for (const actor of sortedUncategorized) {
         const title = actor.title || actor.name || 'Unknown';
         const affiliateUrl = actor.affiliate_url || actor.url || '';
         const description = actor.description || '';
         
-        const maxDescLength = 150;
+        const maxDescLength = 200;
         let shortDescription = description;
         if (description.length > maxDescLength) {
             let cutPoint = maxDescLength;
@@ -237,10 +245,14 @@ if (uncategorized.length > 0) {
             cleanTitle = cleanTitle.replace(/^\[([^\]]+)\]\s*/, '$1 ');
         }
         
-        if (shortDescription) {
-            content += `- **[${cleanTitle}](${affiliateUrl})** - ${shortDescription}\n`;
+        // Escape pipe characters and newlines for table format
+        cleanTitle = cleanTitle.replace(/\|/g, '&#124;').replace(/\n/g, ' ');
+        const safeDescription = (shortDescription || '').replace(/\|/g, '&#124;').replace(/\n/g, ' ');
+        
+        if (safeDescription) {
+            content += `| [${cleanTitle}](${affiliateUrl}) | ${safeDescription} |\n`;
         } else {
-            content += `- **[${cleanTitle}](${affiliateUrl})**\n`;
+            content += `| [${cleanTitle}](${affiliateUrl}) | - |\n`;
         }
     }
     content += `\n`;
