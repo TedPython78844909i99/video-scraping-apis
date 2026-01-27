@@ -1,10 +1,8 @@
-# Videos
+# Video Scraping APIs
 
-<p align="right"><a href="../README.md#-table-of-contents">← Back to main list</a></p>
+**979 APIs for video scraping, downloading, metadata extraction, transcripts, and more**
 
 **Organized APIs by Category**
-
-**979 APIs in this category**
 
 | API Name | Description |
 |----------|-------------|
