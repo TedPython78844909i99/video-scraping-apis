@@ -23,7 +23,9 @@
 
 *Your support helps others discover this valuable resource and keeps me motivated to maintain and update it regularly.*
 
-<a href="https://github.com/cporter202/video-scraping-apis/stargazers" target="_blank"><img src="https://img.shields.io/github/stars/cporter202/video-scraping-apis?style=for-the-badge&logo=github&color=yellow&label=Stars" alt="GitHub Stars"></a>
+<a href="https://star-history.com/#cporter202/video-scraping-apis&Date" target="_blank">
+  <img src="https://api.star-history.com/svg?repos=cporter202/video-scraping-apis&type=Date" alt="Star History Chart" style="max-width: 100%; height: auto;">
+</a>
 
 ---
 
