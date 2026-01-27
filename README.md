@@ -2,7 +2,7 @@
 
 # 🎥 Video Scraping APIs
 
-<img src="https://firebasestorage.googleapis.com/v0/b/facesift.firebasestorage.app/o/user_uploads%2F83EXwNWgaKe1BHmyd9ISw3HCEfi2%2F1765301877738-Generated%20Image%20December%2009%2C%202025%20-%2012_37PM.jpeg?alt=media&token=e2e9e673-ff88-4683-a0b0-9eb3aeeb9559" alt="Video Scraping APIs" style="max-width: 100%; height: auto;">
+<img src="https://firebasestorage.googleapis.com/v0/b/facesift.firebasestorage.app/o/user_uploads%2F83EXwNWgaKe1BHmyd9ISw3HCEfi2%2F1769531592215-Generated%20Image%20January%2027%2C%202026%20-%2011_32AM.jpeg?alt=media&token=03000c23-6d8c-4c28-9ade-289fc7730dc9" alt="Video Scraping APIs" style="max-width: 100%; height: auto;">
 
 **The most comprehensive collection of video scraping APIs on GitHub** - 979 ready-to-use APIs for extracting video data, downloading videos, scraping metadata, and more.
 
@@ -57,7 +57,7 @@
 |--------|-------|
 | **Total APIs** | **979** |
 | **Category** | **Video Scraping** |
-| **Last Updated** | 2025-12-09 |
+| **Last Updated** | 1/27/2026 |
 
 </div>
 
@@ -167,6 +167,6 @@ Always use these APIs responsibly and ethically.
 
 **Made with ❤️ for developers who love video data**
 
-[⭐ Star this repo](https://github.com/cporter202/API-mega-list) | [🚀 Join Community](https://www.skool.com/vibe-coding-with-chris-7196)
+[⭐ Star this repo](https://github.com/cporter202/video-scraping-apis) | [🚀 Join Community](https://www.skool.com/vibe-coding-with-chris-7196)
 
 </div>
