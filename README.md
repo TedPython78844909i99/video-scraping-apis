@@ -17,15 +17,9 @@
 
 ---
 
-### ⭐ Star This Repository
+## Star History
 
-**If this API list has helped you, please consider giving it a star! ⭐**
-
-*Your support helps others discover this valuable resource and keeps me motivated to maintain and update it regularly.*
-
-<a href="https://star-history.com/#cporter202/video-scraping-apis&Date" target="_blank">
-  <img src="https://api.star-history.com/svg?repos=cporter202/video-scraping-apis&type=Date" alt="Star History Chart" style="max-width: 100%; height: auto;">
-</a>
+[![Star History Chart](https://api.star-history.com/svg?repos=cporter202/video-scraping-apis&type=date&legend=top-left)](https://www.star-history.com/#cporter202/video-scraping-apis&type=date&legend=top-left)
 
 ---
 
